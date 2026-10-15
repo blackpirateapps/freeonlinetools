@@ -11,6 +11,9 @@ export default function Navbar() {
     { href: '/compress', label: 'Compress' },
     { href: '/crop', label: 'Crop' },
     { href: '/resize', label: 'Resize' },
+    { href: '/svg-to-png', label: 'SVG→PNG' },
+    { href: '/color-extractor', label: 'Colors' },
+    { href: '/base64', label: 'Base64' },
   ];
 
   return (

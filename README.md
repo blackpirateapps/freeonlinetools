@@ -29,6 +29,23 @@ A fast, private, 100% client-side image utility suite built with Next.js (App Ro
 - Common platform presets (Instagram Square, Story/Reel, Full HD, X/Twitter Banner).
 - Batch resizing queue with single-click ZIP archive generation.
 
+### 4. SVG to PNG / WebP Converter (`/svg-to-png`)
+- Rasterize vector SVG images to crisp high-density PNG or WebP files.
+- Presets: 1x, 2x (Retina), 4x (HiDPI), 8x (Ultra), or custom pixel dimensions.
+- Background control: Transparent (with checkerboard preview), White, Black.
+- Batch queue with one-click ZIP download.
+
+### 5. Image Color Extractor (`/color-extractor`)
+- Dominant palette extraction (5, 8, 12, 16 colors) using Canvas pixel bucketing.
+- Interactive canvas eyedropper: click anywhere on the image to sample exact pixel colors.
+- 1-click copy for HEX, RGB, and HSL values.
+- Export as CSS Variables (`:root`), Tailwind Config, JSON array, or download as PNG color swatch.
+
+### 6. Base64 Image Encoder & Decoder (`/base64`)
+- Encode images into Data URIs, HTML `<img>` elements, CSS background rules, and Markdown snippets.
+- Real-time binary byte size vs Base64 length comparison (+33% overhead indicator).
+- Decode Base64 / Data URI strings back to full image files with direct download or chain to Crop, Resize, or Compress.
+
 ## Getting Started
 
 ### Development

@@ -9,10 +9,13 @@ export default function Footer() {
           <span>—</span>
           <span>All operations happen in your browser via HTML5 Canvas. Zero data leaves your computer.</span>
         </div>
-        <div className="flex items-center gap-4 font-mono">
+        <div className="flex flex-wrap items-center gap-4 font-mono">
           <Link href="/compress" className="hover:underline">Compress</Link>
           <Link href="/crop" className="hover:underline">Crop</Link>
           <Link href="/resize" className="hover:underline">Resize</Link>
+          <Link href="/svg-to-png" className="hover:underline">SVG→PNG</Link>
+          <Link href="/color-extractor" className="hover:underline">Colors</Link>
+          <Link href="/base64" className="hover:underline">Base64</Link>
         </div>
       </div>
     </footer>
