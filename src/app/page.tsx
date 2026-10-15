@@ -14,6 +14,15 @@ import {
   Layers,
   Palette,
   FileCode,
+  FileCheck,
+  Scissors,
+  Split,
+  FileImage,
+  RotateCw,
+  Stamp,
+  FileSpreadsheet,
+  FileCode2,
+  FileText,
 } from 'lucide-react';
 
 interface ToolCard {
@@ -21,13 +30,90 @@ interface ToolCard {
   title: string;
   description: string;
   href: string;
-  category: 'Image' | 'Optimization' | 'Transform';
+  category: 'Image' | 'Optimization' | 'Transform' | 'PDF' | 'Data & Text';
   icon: React.ComponentType<{ className?: string }>;
   tags: string[];
   status: 'available' | 'planned';
 }
 
 const TOOLS: ToolCard[] = [
+  {
+    id: 'merge-pdf',
+    title: 'PDF Merger',
+    description:
+      'Combine multiple PDF documents into a single document with drag-and-drop sequencing and page count previews.',
+    href: '/merge-pdf',
+    category: 'PDF',
+    icon: FileCheck,
+    tags: ['PDF', 'Merge', 'Combine', 'Reorder'],
+    status: 'available',
+  },
+  {
+    id: 'split-pdf',
+    title: 'Split & Extract PDF',
+    description:
+      'Extract page ranges, delete unwanted pages, or split every page into separate files with visual thumbnail grid.',
+    href: '/split-pdf',
+    category: 'PDF',
+    icon: Scissors,
+    tags: ['PDF', 'Split', 'Extract', 'Thumbnails'],
+    status: 'available',
+  },
+  {
+    id: 'extract-odd-even-pdf',
+    title: 'Extract Odd & Even Pages',
+    description:
+      '1-click duplex separation — extract odd pages, even pages, or download both as a ZIP bundle for scanning and printing.',
+    href: '/extract-odd-even-pdf',
+    category: 'PDF',
+    icon: Split,
+    tags: ['PDF', 'Duplex', 'Odd/Even', 'Print'],
+    status: 'available',
+  },
+  {
+    id: 'images-to-pdf',
+    title: 'Images to PDF Converter',
+    description:
+      'Convert JPG, PNG, and WebP images to a clean PDF with A4/Letter sizing, auto-orientation, and margin presets.',
+    href: '/images-to-pdf',
+    category: 'PDF',
+    icon: FileImage,
+    tags: ['Images', 'PDF', 'A4', 'Layout'],
+    status: 'available',
+  },
+  {
+    id: 'pdf-to-images',
+    title: 'PDF to Images Converter',
+    description:
+      'Rasterize PDF pages into high-resolution PNG, WebP, or JPEG with HiDPI scale (1x-3x) and direct image tool chaining.',
+    href: '/pdf-to-images',
+    category: 'PDF',
+    icon: Layers,
+    tags: ['PDF', 'Rasterize', 'PNG', 'HiDPI'],
+    status: 'available',
+  },
+  {
+    id: 'rotate-pdf',
+    title: 'Rotate & Organize PDF',
+    description:
+      'Rotate individual or all pages (90° CW, 90° CCW, 180°), delete pages, and reorder with live visual orientation.',
+    href: '/rotate-pdf',
+    category: 'PDF',
+    icon: RotateCw,
+    tags: ['PDF', 'Rotate', 'Organize', 'Orient'],
+    status: 'available',
+  },
+  {
+    id: 'watermark-pdf',
+    title: 'PDF Watermark & Page Numbers',
+    description:
+      'Add custom text stamps ("CONFIDENTIAL", "DRAFT") with opacity controls, and "Page X of Y" headers/footers.',
+    href: '/watermark-pdf',
+    category: 'PDF',
+    icon: Stamp,
+    tags: ['PDF', 'Watermark', 'Page Numbers', 'Stamp'],
+    status: 'available',
+  },
   {
     id: 'compress',
     title: 'Image Compressor',
@@ -94,9 +180,53 @@ const TOOLS: ToolCard[] = [
     tags: ['Base64', 'Data URI', 'HTML/CSS', 'Decode'],
     status: 'available',
   },
+  {
+    id: 'csv-to-json',
+    title: 'CSV ↔ JSON Converter',
+    description:
+      'Convert tabular CSV/TSV to structured JSON and JSON to CSV with auto delimiter detection, type inference, and table preview.',
+    href: '/csv-to-json',
+    category: 'Data & Text',
+    icon: FileSpreadsheet,
+    tags: ['CSV', 'JSON', 'TSV', 'Table', 'RFC-4180'],
+    status: 'available',
+  },
+  {
+    id: 'yaml-to-json',
+    title: 'YAML ↔ JSON Converter',
+    description:
+      'Convert configurations between YAML and JSON bidirectionally with line-accurate syntax error linting and custom indentation.',
+    href: '/yaml-to-json',
+    category: 'Data & Text',
+    icon: FileCode2,
+    tags: ['YAML', 'JSON', 'Config', 'Kubernetes', 'Docker'],
+    status: 'available',
+  },
+  {
+    id: 'markdown-to-html',
+    title: 'Markdown ↔ HTML Converter',
+    description:
+      'Convert Markdown to HTML with live rendered preview and HTML to Markdown with GitHub-flavored markdown styling.',
+    href: '/markdown-to-html',
+    category: 'Data & Text',
+    icon: FileText,
+    tags: ['Markdown', 'HTML', 'GFM', 'Docs', 'WYSIWYG'],
+    status: 'available',
+  },
+  {
+    id: 'convert-image',
+    title: 'Image Converter & Favicon Generator',
+    description:
+      'Convert images between WebP, PNG, JPEG, and multi-resolution Windows ICO favicons with batch queue and ZIP export.',
+    href: '/convert-image',
+    category: 'Image',
+    icon: Layers,
+    tags: ['WebP', 'PNG', 'JPEG', 'ICO', 'Favicon', 'Batch'],
+    status: 'available',
+  },
 ];
 
-const CATEGORIES = ['All', 'Image', 'Optimization', 'Transform'];
+const CATEGORIES = ['All', 'Data & Text', 'PDF', 'Image', 'Optimization', 'Transform'];
 
 export default function HomePage() {
   const [search, setSearch] = useState('');

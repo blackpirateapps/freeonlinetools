@@ -322,3 +322,107 @@ export async function createZipAndDownload(
   const zipBlob = await zip.generateAsync({ type: 'blob' });
   downloadBlob(zipBlob, zipFilename);
 }
+
+/**
+ * Builds a multi-resolution Windows ICO file containing PNG streams (modern Vista+ ICO standard).
+ */
+export async function createIcoFromPngs(
+  pngImages: { size: number; blob: Blob }[]
+): Promise<Blob> {
+  const buffers: Uint8Array[] = [];
+  for (const img of pngImages) {
+    const ab = await img.blob.arrayBuffer();
+    buffers.push(new Uint8Array(ab));
+  }
+
+  const numImages = pngImages.length;
+  const headerSize = 6 + numImages * 16;
+  const totalDataSize = buffers.reduce((acc, b) => acc + b.byteLength, 0);
+  const totalFileSize = headerSize + totalDataSize;
+
+  const out = new Uint8Array(totalFileSize);
+  const view = new DataView(out.buffer);
+
+  // 1. ICONDIR (6 bytes)
+  view.setUint16(0, 0, true); // Reserved (0)
+  view.setUint16(2, 1, true); // Resource Type (1 for ICO)
+  view.setUint16(4, numImages, true); // Image count
+
+  // 2. ICONDIRENTRY (16 bytes each)
+  let currentOffset = headerSize;
+  for (let i = 0; i < numImages; i++) {
+    const entryOffset = 6 + i * 16;
+    const size = pngImages[i].size;
+    const buf = buffers[i];
+
+    view.setUint8(entryOffset + 0, size >= 256 ? 0 : size); // Width
+    view.setUint8(entryOffset + 1, size >= 256 ? 0 : size); // Height
+    view.setUint8(entryOffset + 2, 0); // Palette colors
+    view.setUint8(entryOffset + 3, 0); // Reserved
+    view.setUint16(entryOffset + 4, 1, true); // Color planes
+    view.setUint16(entryOffset + 6, 32, true); // Bits per pixel
+    view.setUint32(entryOffset + 8, buf.byteLength, true); // Data size
+    view.setUint32(entryOffset + 12, currentOffset, true); // Offset in file
+
+    // Copy image data into payload
+    out.set(buf, currentOffset);
+    currentOffset += buf.byteLength;
+  }
+
+  return new Blob([out], { type: 'image/x-icon' });
+}
+
+/**
+ * Converts an image file or blob to target format (JPEG, PNG, WebP) with optional background filling.
+ */
+export async function convertImage(
+  source: File | Blob | string,
+  targetFormat: ImageFormat,
+  quality = 0.92,
+  backgroundColor: 'transparent' | '#ffffff' | '#000000' = 'transparent'
+): Promise<{ blob: Blob; width: number; height: number; size: number; previewUrl: string }> {
+  const url = typeof source === 'string' ? source : URL.createObjectURL(source);
+  const isCreatedUrl = typeof source !== 'string';
+
+  try {
+    const img = await loadImage(url);
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth || img.width;
+    canvas.height = img.naturalHeight || img.height;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Could not get canvas context');
+
+    if (targetFormat === 'image/jpeg' || backgroundColor !== 'transparent') {
+      ctx.fillStyle = backgroundColor === 'transparent' ? '#ffffff' : backgroundColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    ctx.drawImage(img, 0, 0);
+
+    const blob = await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (b) => {
+          if (b) resolve(b);
+          else reject(new Error('Canvas toBlob conversion failed'));
+        },
+        targetFormat,
+        quality
+      );
+    });
+
+    const previewUrl = URL.createObjectURL(blob);
+
+    return {
+      blob,
+      width: canvas.width,
+      height: canvas.height,
+      size: blob.size,
+      previewUrl,
+    };
+  } finally {
+    if (isCreatedUrl) {
+      URL.revokeObjectURL(url);
+    }
+  }
+}

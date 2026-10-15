@@ -9,13 +9,21 @@ export default function Footer() {
           <span>—</span>
           <span>All operations happen in your browser via HTML5 Canvas. Zero data leaves your computer.</span>
         </div>
-        <div className="flex flex-wrap items-center gap-4 font-mono">
+        <div className="flex flex-wrap items-center gap-3 font-mono">
+          <Link href="/csv-to-json" className="hover:underline">CSV↔JSON</Link>
+          <Link href="/yaml-to-json" className="hover:underline">YAML↔JSON</Link>
+          <Link href="/markdown-to-html" className="hover:underline">MD↔HTML</Link>
+          <Link href="/convert-image" className="hover:underline">Convert</Link>
+          <Link href="/merge-pdf" className="hover:underline">Merge</Link>
+          <Link href="/split-pdf" className="hover:underline">Split</Link>
+          <Link href="/extract-odd-even-pdf" className="hover:underline">Odd/Even</Link>
+          <Link href="/images-to-pdf" className="hover:underline">Img→PDF</Link>
+          <Link href="/pdf-to-images" className="hover:underline">PDF→Img</Link>
+          <Link href="/rotate-pdf" className="hover:underline">Rotate</Link>
+          <Link href="/watermark-pdf" className="hover:underline">Watermark</Link>
           <Link href="/compress" className="hover:underline">Compress</Link>
           <Link href="/crop" className="hover:underline">Crop</Link>
           <Link href="/resize" className="hover:underline">Resize</Link>
-          <Link href="/svg-to-png" className="hover:underline">SVG→PNG</Link>
-          <Link href="/color-extractor" className="hover:underline">Colors</Link>
-          <Link href="/base64" className="hover:underline">Base64</Link>
         </div>
       </div>
     </footer>

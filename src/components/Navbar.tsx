@@ -8,12 +8,14 @@ export default function Navbar() {
 
   const navLinks = [
     { href: '/', label: 'Tools' },
+    { href: '/csv-to-json', label: 'CSV↔JSON' },
+    { href: '/yaml-to-json', label: 'YAML↔JSON' },
+    { href: '/markdown-to-html', label: 'MD↔HTML' },
+    { href: '/convert-image', label: 'Convert Img' },
+    { href: '/merge-pdf', label: 'PDF' },
     { href: '/compress', label: 'Compress' },
     { href: '/crop', label: 'Crop' },
     { href: '/resize', label: 'Resize' },
-    { href: '/svg-to-png', label: 'SVG→PNG' },
-    { href: '/color-extractor', label: 'Colors' },
-    { href: '/base64', label: 'Base64' },
   ];
 
   return (

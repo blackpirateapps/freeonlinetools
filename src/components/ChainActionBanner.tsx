@@ -8,7 +8,7 @@ import { formatBytes, downloadBlob, getExtensionFromMimeType } from '@/lib/image
 import { ImageFormat } from '@/lib/types';
 
 interface ChainActionBannerProps {
-  currentTool: 'crop' | 'compress' | 'resize';
+  currentTool: 'crop' | 'compress' | 'resize' | 'pdf-to-images' | 'convert-image';
   processedBlob: Blob;
   filename: string;
   width: number;
@@ -35,7 +35,7 @@ export default function ChainActionBanner({
     downloadBlob(processedBlob, outName);
   };
 
-  const handleChain = (target: 'crop' | 'compress' | 'resize') => {
+  const handleChain = (target: 'crop' | 'compress' | 'resize' | 'images-to-pdf') => {
     setChainedImage({
       blob: processedBlob,
       name: filename,
@@ -118,6 +118,14 @@ export default function ChainActionBanner({
               <ArrowRight className="w-3 h-3 text-neutral-400" />
             </button>
           )}
+
+          <button
+            onClick={() => handleChain('images-to-pdf')}
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-mono border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-950 text-neutral-800 dark:text-neutral-200 hover:border-neutral-500 cursor-pointer"
+          >
+            <span>To PDF</span>
+            <ArrowRight className="w-3 h-3 text-neutral-400" />
+          </button>
         </div>
       </div>
     </div>

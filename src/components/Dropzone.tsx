@@ -8,6 +8,8 @@ interface DropzoneProps {
   multiple?: boolean;
   accept?: string;
   label?: string;
+  helperText?: string;
+  icon?: React.ComponentType<{ className?: string }>;
   compact?: boolean;
 }
 
@@ -16,6 +18,8 @@ export default function Dropzone({
   multiple = false,
   accept = 'image/jpeg,image/png,image/webp,image/avif,image/gif,image/bmp',
   label,
+  helperText,
+  icon: CustomIcon,
   compact = false,
 }: DropzoneProps) {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -26,8 +30,26 @@ export default function Dropzone({
       if (!fileList) return;
       const validFiles: File[] = [];
       const files = Array.from(fileList);
+      const acceptedTypes = accept.split(',').map((t) => t.trim().toLowerCase());
+
       for (const file of files) {
-        if (file.type.startsWith('image/')) {
+        const fileType = file.type.toLowerCase();
+        const fileName = file.name.toLowerCase();
+
+        // Check if file matches accept list
+        const isAccepted = acceptedTypes.some((type) => {
+          if (type === '*/*' || type === '') return true;
+          if (type.endsWith('/*')) {
+            const prefix = type.slice(0, -2);
+            return fileType.startsWith(prefix);
+          }
+          if (type.startsWith('.')) {
+            return fileName.endsWith(type);
+          }
+          return fileType === type;
+        });
+
+        if (isAccepted || (!accept && (fileType.startsWith('image/') || fileType === 'application/pdf'))) {
           validFiles.push(file);
           if (!multiple) break;
         }
@@ -36,7 +58,7 @@ export default function Dropzone({
         onFilesSelected(validFiles);
       }
     },
-    [multiple, onFilesSelected]
+    [accept, multiple, onFilesSelected]
   );
 
   const onDragOver = (e: React.DragEvent) => {
@@ -122,13 +144,13 @@ export default function Dropzone({
         className="hidden"
       />
       <div className="w-10 h-10 border border-neutral-300 dark:border-neutral-700 flex items-center justify-center mb-3 bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300">
-        <ImageIcon className="w-5 h-5" />
+        {CustomIcon ? <CustomIcon className="w-5 h-5" /> : <ImageIcon className="w-5 h-5" />}
       </div>
       <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100 mb-1">
-        {label || (multiple ? 'Drop images here or click to browse' : 'Drop an image here or click to browse')}
+        {label || (multiple ? 'Drop files here or click to browse' : 'Drop a file here or click to browse')}
       </p>
       <p className="text-xs text-neutral-500 dark:text-neutral-400 font-mono">
-        Paste from clipboard (Ctrl+V) also works • JPG, PNG, WebP, AVIF
+        {helperText || 'Paste from clipboard (Ctrl+V) also works • JPG, PNG, WebP, AVIF'}
       </p>
     </div>
   );
